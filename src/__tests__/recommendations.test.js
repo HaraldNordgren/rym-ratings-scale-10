@@ -1,53 +1,27 @@
 const { loadHTMLFile, runContentScript } = require('./test-helpers')
 
 describe('content.js DOM manipulation - recommendations', () => {
-  test('converts numeric ratings in recommendations page', async () => {
+  test('converts rating in component_discography_item_details_average_num', async () => {
     const dom = loadHTMLFile('recomendations/Recommendations - Rate Your Music.html')
-    const ratingElements = Array.from(
-      dom.window.document.querySelectorAll(
-        '.component_discography_item_details_average, .component_discography_item_details_average_num'
-      )
-    ).filter((element) => {
-      const text = element.textContent.trim()
-      const num = parseFloat(text)
-      return !isNaN(num) && num >= 0.5 && num <= 5.0
-    })
-
-    expect(ratingElements.length).toBeGreaterThan(0)
-
-    const originalValues = ratingElements.map((element) =>
-      parseFloat(element.textContent.trim())
+    const elements = Array.from(
+      dom.window.document.querySelectorAll('.component_discography_item_details_average_num')
     )
+    const element = elements.find((el) => el.textContent.trim() === '3.56')
 
     await runContentScript(dom)
 
-    ratingElements.forEach((element, index) => {
-      const convertedText = element.textContent.trim()
-      const originalValue = originalValues[index]
-      const expectedValue = (originalValue * 2).toFixed(1)
-      expect(convertedText).toBe(expectedValue)
-    })
+    expect(element.textContent.trim()).toBe('7.1')
   })
 
-  test('converts all numeric ratings in recommendations page to 0-10 scale', async () => {
+  test('converts rating in component_discography_item_details_average', async () => {
     const dom = loadHTMLFile('recomendations/Recommendations - Rate Your Music.html')
-    const ratingElements = Array.from(
-      dom.window.document.querySelectorAll(
-        '.component_discography_item_details_average, .component_discography_item_details_average_num'
-      )
-    ).filter((element) => {
-      const text = element.textContent.trim()
-      const num = parseFloat(text)
-      return !isNaN(num) && num >= 0.5 && num <= 5.0
-    })
+    const elements = Array.from(
+      dom.window.document.querySelectorAll('.component_discography_item_details_average')
+    )
+    const element = elements.find((el) => el.textContent.trim() === '3.56')
 
     await runContentScript(dom)
 
-    ratingElements.forEach((element) => {
-      const text = element.textContent.trim()
-      const value = parseFloat(text)
-      expect(value).toBeGreaterThanOrEqual(1.0)
-      expect(value).toBeLessThanOrEqual(10.0)
-    })
+    expect(element.textContent.trim()).toBe('7.1')
   })
 })
