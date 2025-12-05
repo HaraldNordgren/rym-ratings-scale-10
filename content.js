@@ -17,11 +17,14 @@ const update = (getValue, setValue) => {
 };
 
 const processRatings = () => {
-  document.querySelectorAll('.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, [itemprop="ratingValue"]').forEach(element => {
+  document.querySelectorAll('.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, .disco_avg_rating, [itemprop="ratingValue"]').forEach(element => {
+    const ratingSpan = element.querySelector('span.rating_not_enough_data');
+    const targetElement = ratingSpan || element;
+    
     update(() => {
-      return element.textContent.trim();
+      return targetElement.textContent.trim();
     }, value => {
-      element.textContent = value;
+      targetElement.textContent = value;
     });
     
     if (element.classList.contains('avg_rating') || element.hasAttribute('itemprop')) {
@@ -48,7 +51,7 @@ const processRatings = () => {
 
   document.querySelectorAll('#filmrating a.medium').forEach(element => {
     const text = element.textContent.trim();
-    const converted = convert(text, 0);
+    const converted = convert(text, 1);
     if (converted !== text) {
       element.textContent = converted;
     }
