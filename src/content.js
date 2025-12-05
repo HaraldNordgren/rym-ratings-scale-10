@@ -21,7 +21,7 @@ const update = (getValue, setValue, element, dataKey) => {
 const processRatings = () => {
   document
     .querySelectorAll(
-      '.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, .disco_avg_rating, [itemprop="ratingValue"]'
+      '.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, .disco_avg_rating, .component_discography_item_details_average, .component_discography_item_details_average_num, [itemprop="ratingValue"]'
     )
     .forEach((element) => {
       if (element.dataset.rymProcessed === 'true') return
