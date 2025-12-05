@@ -13,6 +13,7 @@ A Chrome extension that converts RateYourMusic ratings from a 5-point scale to a
 ## Usage
 
 Once installed, the extension automatically converts all ratings on rateyourmusic.com pages:
+
 - Average ratings (`.avg_rating`)
 - Friends ratings (`.avg_rating_friends`)
 - User's own ratings (`.rating_num`)
@@ -35,4 +36,3 @@ npm test
 - `content.js` - Content script that modifies ratings on the page
 - `src/ratingConverter.js` - Rating conversion utility function
 - `src/ratingConverter.test.js` - Unit tests for rating conversion
-
