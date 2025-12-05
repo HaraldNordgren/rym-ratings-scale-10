@@ -1,4 +1,4 @@
-const { convertRating } = require('./ratingConverter');
+const { convertRating } = require('../ratingConverter');
 
 describe('convertRating', () => {
   test('converts 3.94 to 7.9', () => {
