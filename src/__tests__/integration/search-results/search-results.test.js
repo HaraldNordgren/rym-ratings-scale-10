@@ -2,7 +2,7 @@ const { loadHTMLFile, runContentScript } = require('./test-helpers')
 
 describe('content.js DOM manipulation - search results', () => {
   test('converts rating in search results', async () => {
-    const dom = loadHTMLFile('search-results/Search - Rate Your Music.html')
+    const dom = loadHTMLFile('Search - Rate Your Music.html')
     const elements = Array.from(
       dom.window.document.querySelectorAll('td[style*="width:100px"] span')
     )

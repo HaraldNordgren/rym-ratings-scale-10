@@ -6,10 +6,10 @@ const fs = require('fs')
 const path = require('path')
 const { JSDOM, VirtualConsole } = require('jsdom')
 
-const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', 'content.js'), 'utf8')
+const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'content.js'), 'utf8')
 
-const loadHTMLFile = (relativePath, testDir = __dirname) => {
-  const htmlPath = path.join(testDir, relativePath)
+const loadHTMLFile = (relativePath) => {
+  const htmlPath = path.join(__dirname, 'testdata', relativePath)
   const html = fs.readFileSync(htmlPath, 'utf8')
   const virtualConsole = new VirtualConsole()
   virtualConsole.on('error', () => {})
