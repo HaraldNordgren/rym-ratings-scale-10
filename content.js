@@ -53,10 +53,8 @@ const startObserver = () => {
   observer = new MutationObserver(() => {
     observer.disconnect();
     observer = null;
-    setTimeout(() => {
-      processRatings();
-      startObserver();
-    }, 100);
+    processRatings();
+    startObserver();
   });
   observer.observe(document.body, { childList: true, subtree: true });
 };
