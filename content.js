@@ -1,7 +1,7 @@
-const convert = value => {
+const convert = (value, decimals = 1) => {
   const number = parseFloat(value);
   if (number >= 0.5 && number <= 5.0) {
-    return (number * 2).toFixed(1);
+    return (number * 2).toFixed(decimals);
   }
   return value;
 };
@@ -48,7 +48,7 @@ const processRatings = () => {
 
   document.querySelectorAll('#filmrating a.medium').forEach(element => {
     const text = element.textContent.trim();
-    const converted = convert(text);
+    const converted = convert(text, 0);
     if (converted !== text) {
       element.textContent = converted;
     }
