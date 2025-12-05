@@ -84,6 +84,22 @@ const processRatings = () => {
       element.dataset.rymProcessed = 'true'
     }
   })
+
+  if (document.documentElement.classList.contains('page_search')) {
+    document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
+      if (element.dataset.rymProcessed === 'true') return
+      
+      const style = element.getAttribute('style') || ''
+      if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
+        const text = element.textContent.trim()
+        const converted = convert(text, 1)
+        if (converted !== text) {
+          element.textContent = converted
+          element.dataset.rymProcessed = 'true'
+        }
+      }
+    })
+  }
 }
 
 let observer = null
