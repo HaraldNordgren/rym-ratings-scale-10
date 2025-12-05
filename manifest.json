@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "RYM Ratings Scale 10",
+  "version": "1.0.0",
+  "description": "Converts RateYourMusic ratings from 5-point scale to 10-point scale",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["*://rateyourmusic.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
+
