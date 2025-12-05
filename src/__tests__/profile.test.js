@@ -20,7 +20,7 @@ describe('content.js DOM manipulation - profile', () => {
     ratingLinks.forEach((link, index) => {
       const convertedText = link.textContent.trim()
       const originalValue = originalValues[index]
-      const expectedValue = (originalValue * 2).toFixed(1)
+      const expectedValue = (originalValue * 2).toFixed(0)
       expect(convertedText).toBe(expectedValue)
     })
   })

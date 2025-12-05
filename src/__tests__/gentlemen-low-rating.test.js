@@ -81,3 +81,5 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
     expect(element.getAttribute('content')).toBe('4.8')
   })
 })
+
+

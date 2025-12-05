@@ -78,7 +78,7 @@ const processRatings = () => {
     if (element.dataset.rymProcessed === 'true') return
     
     const text = element.textContent.trim()
-    const converted = convert(text, 1)
+    const converted = convert(text, 0)
     if (converted !== text) {
       element.textContent = converted
       element.dataset.rymProcessed = 'true'
