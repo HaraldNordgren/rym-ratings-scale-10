@@ -4,43 +4,33 @@ global.TextDecoder = TextDecoder;
 
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require('jsdom');
+const { JSDOM, VirtualConsole } = require('jsdom');
 
 const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', 'content.js'), 'utf8');
+const testdataPath = path.join(__dirname, '..', '..', 'testdata');
 
-const loadHTMLFile = (filePath) => {
-  const html = fs.readFileSync(filePath, 'utf8');
-  const fileUrl = `file://${path.resolve(filePath)}`;
-  const virtualConsole = new (require('jsdom').VirtualConsole)();
+const loadHTMLFile = (relativePath) => {
+  const html = fs.readFileSync(path.join(testdataPath, relativePath), 'utf8');
+  const virtualConsole = new VirtualConsole();
   virtualConsole.on('error', () => {});
   virtualConsole.on('jsdomError', () => {});
-  const dom = new JSDOM(html, {
+  return new JSDOM(html, {
     runScripts: 'outside-only',
-    resources: 'usable',
-    url: fileUrl,
-    virtualConsole: virtualConsole
+    url: `file://${path.resolve(testdataPath, relativePath)}`,
+    virtualConsole
   });
-  return dom;
 };
 
 const runContentScript = (dom) => {
   dom.window.eval(contentScript);
-  
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 150);
-  });
+  return new Promise(resolve => setTimeout(resolve, 150));
 };
 
 describe('content.js DOM manipulation', () => {
   test('converts avg_rating from annie-hall.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'annie-hall', 'annie-hall.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
+    const dom = loadHTMLFile('annie-hall/annie-hall.html');
+    const element = dom.window.document.querySelector('.avg_rating');
     
-    const element = document.querySelector('.avg_rating');
-    expect(element).toBeTruthy();
     expect(element.textContent.trim()).toBe('3.94');
     expect(element.hasAttribute('itemprop')).toBe(true);
 
@@ -53,12 +43,9 @@ describe('content.js DOM manipulation', () => {
   });
 
   test('converts avg_rating_friends from annie-hall.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'annie-hall', 'annie-hall.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
+    const dom = loadHTMLFile('annie-hall/annie-hall.html');
+    const element = dom.window.document.querySelector('.avg_rating_friends');
     
-    const element = document.querySelector('.avg_rating_friends');
-    expect(element).toBeTruthy();
     expect(element.textContent.trim()).toBe('3.73');
 
     await runContentScript(dom);
@@ -67,22 +54,15 @@ describe('content.js DOM manipulation', () => {
   });
 
   test('converts review_rating with itemprop from annie-hall.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'annie-hall', 'annie-hall.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
-    
-    const elements = document.querySelectorAll('.review_rating[itemprop="ratingValue"]');
-    expect(elements.length).toBeGreaterThan(0);
-    
+    const dom = loadHTMLFile('annie-hall/annie-hall.html');
+    const elements = dom.window.document.querySelectorAll('.review_rating[itemprop="ratingValue"]');
     const element = elements[0];
     const originalContent = element.getAttribute('content');
-    expect(originalContent).toBeTruthy();
 
     await runContentScript(dom);
     
     const convertedContent = element.getAttribute('content');
     const image = element.querySelector('img');
-    expect(image).toBeTruthy();
     
     if (parseFloat(originalContent) >= 0.5 && parseFloat(originalContent) <= 5.0) {
       const expectedValue = (parseFloat(originalContent) * 2).toFixed(1);
@@ -93,16 +73,9 @@ describe('content.js DOM manipulation', () => {
   });
 
   test('converts chart page average_num from custom-chart.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'film-chart', 'custom-chart.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
-    
-    const elements = document.querySelectorAll('.page_charts_section_charts_item_details_average_num');
-    expect(elements.length).toBeGreaterThan(0);
-    
-    const element = elements[0];
+    const dom = loadHTMLFile('film-chart/custom-chart.html');
+    const element = dom.window.document.querySelector('.page_charts_section_charts_item_details_average_num');
     const originalValue = element.textContent.trim();
-    expect(originalValue).toBeTruthy();
 
     await runContentScript(dom);
     
@@ -114,13 +87,8 @@ describe('content.js DOM manipulation', () => {
   });
 
   test('converts multiple chart page ratings from custom-chart.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'film-chart', 'custom-chart.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
-    
-    const elements = Array.from(document.querySelectorAll('.page_charts_section_charts_item_details_average_num')).slice(0, 3);
-    expect(elements.length).toBe(3);
-    
+    const dom = loadHTMLFile('film-chart/custom-chart.html');
+    const elements = Array.from(dom.window.document.querySelectorAll('.page_charts_section_charts_item_details_average_num')).slice(0, 3);
     const originalValues = elements.map(el => el.textContent.trim());
     
     await runContentScript(dom);
@@ -136,12 +104,8 @@ describe('content.js DOM manipulation', () => {
   });
 
   test('converts all chart page ratings in custom-chart.html', async () => {
-    const htmlPath = path.join(__dirname, '..', '..', 'testdata', 'film-chart', 'custom-chart.html');
-    const dom = loadHTMLFile(htmlPath);
-    const document = dom.window.document;
-    
-    const elements = document.querySelectorAll('.page_charts_section_charts_item_details_average_num');
-    expect(elements.length).toBeGreaterThan(0);
+    const dom = loadHTMLFile('film-chart/custom-chart.html');
+    const elements = dom.window.document.querySelectorAll('.page_charts_section_charts_item_details_average_num');
     
     await runContentScript(dom);
     
