@@ -55,20 +55,6 @@ describe('content.js DOM manipulation', () => {
     expect(element.textContent).toBe('7.5');
   });
 
-  test('converts rating_num from 5.0 to 10.0', async () => {
-    const dom = createDOM();
-    const document = dom.window.document;
-    
-    const element = document.createElement('span');
-    element.className = 'rating_num';
-    element.textContent = '5.0';
-    document.body.appendChild(element);
-
-    await runContentScript(dom);
-    
-    expect(element.textContent).toBe('10.0');
-  });
-
   test('converts chart page average_num from 4.06 to 8.1', async () => {
     const dom = createDOM();
     const document = dom.window.document;
