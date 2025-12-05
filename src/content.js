@@ -100,6 +100,17 @@ const processRatings = () => {
       }
     })
   }
+
+  document.querySelectorAll('[id^="film_cat_catalog_msg_"]').forEach((element) => {
+    if (element.dataset.rymProcessed === 'true') return
+
+    const text = element.textContent.trim()
+    const converted = convert(text, 0)
+    if (converted !== text) {
+      element.textContent = converted
+      element.dataset.rymProcessed = 'true'
+    }
+  })
 }
 
 let observer = null

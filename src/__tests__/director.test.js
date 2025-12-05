@@ -16,4 +16,13 @@ describe('content.js DOM manipulation - director', () => {
     const targetElement = span || element
     expect(targetElement.textContent.trim()).toBe('3.2')
   })
+
+  test('converts film_cat_catalog_msg rating from director page', async () => {
+    const dom = loadHTMLFile('director/Francis Ford Coppola Filmography - Rate Your Music.html')
+    const element = dom.window.document.querySelector('#film_cat_catalog_msg_58')
+
+    await runContentScript(dom)
+
+    expect(element.textContent.trim()).toBe('10.0')
+  })
 })
