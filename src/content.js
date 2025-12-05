@@ -111,6 +111,17 @@ const processRatings = () => {
       element.dataset.rymProcessed = 'true'
     }
   })
+
+  document.querySelectorAll('.rating_num').forEach((element) => {
+    if (element.dataset.rymProcessed === 'true') return
+
+    const text = element.textContent.trim()
+    const converted = convert(text, 0)
+    if (converted !== text) {
+      element.textContent = converted
+      element.dataset.rymProcessed = 'true'
+    }
+  })
 }
 
 let observer = null

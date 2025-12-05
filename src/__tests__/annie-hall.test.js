@@ -30,4 +30,13 @@ describe('content.js DOM manipulation - annie-hall', () => {
     expect(image.getAttribute('alt')).toContain('10.0')
     expect(image.getAttribute('title')).toContain('10.0')
   })
+
+  test('converts rating_num from annie-hall.html', async () => {
+    const dom = loadHTMLFile('annie-hall/annie-hall.html')
+    const element = dom.window.document.querySelector('#rating_num_F_30')
+
+    await runContentScript(dom)
+
+    expect(element.textContent.trim()).toBe('10')
+  })
 })

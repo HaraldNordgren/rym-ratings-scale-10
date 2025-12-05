@@ -23,6 +23,6 @@ describe('content.js DOM manipulation - director', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('10.0')
+    expect(element.textContent.trim()).toBe('10')
   })
 })
