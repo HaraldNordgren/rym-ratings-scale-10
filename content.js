@@ -45,6 +45,14 @@ const processRatings = () => {
       }
     }
   });
+
+  document.querySelectorAll('#filmrating a.medium').forEach(element => {
+    const text = element.textContent.trim();
+    const converted = convert(text);
+    if (converted !== text) {
+      element.textContent = converted;
+    }
+  });
 };
 
 let observer = null;
