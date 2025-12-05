@@ -6,8 +6,8 @@ const fs = require('fs')
 const path = require('path')
 const { JSDOM, VirtualConsole } = require('jsdom')
 
-const contentScript = fs.readFileSync(path.join(__dirname, '..', 'content.js'), 'utf8')
-const testdataPath = path.join(__dirname, '..', '..', 'testdata')
+const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', 'content.js'), 'utf8')
+const testdataPath = path.join(__dirname, '..', '..', '..', 'testdata')
 
 const loadHTMLFile = (relativePath) => {
   const html = fs.readFileSync(path.join(testdataPath, relativePath), 'utf8')
