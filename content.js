@@ -17,7 +17,7 @@ const update = (getValue, setValue) => {
 };
 
 const processRatings = () => {
-  document.querySelectorAll('.avg_rating, .avg_rating_friends, .rating_num, [itemprop="ratingValue"]').forEach(element => {
+  document.querySelectorAll('.avg_rating, .avg_rating_friends, .rating_num, .page_charts_section_charts_item_details_average_num, [itemprop="ratingValue"]').forEach(element => {
     update(() => {
       return element.textContent.trim();
     }, value => {
