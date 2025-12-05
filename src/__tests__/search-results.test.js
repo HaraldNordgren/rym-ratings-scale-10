@@ -20,6 +20,3 @@ describe('content.js DOM manipulation - search results', () => {
     expect(element.textContent.trim()).toBe('7.4')
   })
 })
-
-
-

@@ -7,7 +7,7 @@ const convert = (value, decimals = 1) => {
 
 const update = (getValue, setValue, element, dataKey) => {
   if (element.dataset[dataKey] === 'processed') return
-  
+
   const value = getValue()
   if (value) {
     const converted = convert(value)
@@ -25,7 +25,7 @@ const processRatings = () => {
     )
     .forEach((element) => {
       if (element.dataset.rymProcessed === 'true') return
-      
+
       const ratingSpan = element.querySelector('span.rating_not_enough_data')
       const targetElement = ratingSpan || element
 
@@ -70,13 +70,13 @@ const processRatings = () => {
           })
         }
       }
-      
+
       element.dataset.rymProcessed = 'true'
     })
 
   document.querySelectorAll('#filmrating a.medium').forEach((element) => {
     if (element.dataset.rymProcessed === 'true') return
-    
+
     const text = element.textContent.trim()
     const converted = convert(text, 0)
     if (converted !== text) {
@@ -88,7 +88,7 @@ const processRatings = () => {
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
       if (element.dataset.rymProcessed === 'true') return
-      
+
       const style = element.getAttribute('style') || ''
       if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
         const text = element.textContent.trim()
