@@ -1,17 +1,19 @@
 const convert = (value, decimals = 1) => {
   const number = parseFloat(value)
-  if (number >= 0.5 && number <= 5.0) {
-    return (number * 2).toFixed(decimals)
-  }
-  return value
+  if (isNaN(number) || !isFinite(number)) return value
+  if (number < 0.5 || number > 5.0) return value
+  return (number * 2).toFixed(decimals)
 }
 
-const update = (getValue, setValue) => {
+const update = (getValue, setValue, element, dataKey) => {
+  if (element.dataset[dataKey] === 'processed') return
+  
   const value = getValue()
   if (value) {
     const converted = convert(value)
     if (converted !== value) {
       setValue(converted)
+      element.dataset[dataKey] = 'processed'
     }
   }
 }
@@ -22,6 +24,8 @@ const processRatings = () => {
       '.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, .disco_avg_rating, [itemprop="ratingValue"]'
     )
     .forEach((element) => {
+      if (element.dataset.rymProcessed === 'true') return
+      
       const ratingSpan = element.querySelector('span.rating_not_enough_data')
       const targetElement = ratingSpan || element
 
@@ -31,7 +35,9 @@ const processRatings = () => {
         },
         (value) => {
           targetElement.textContent = value
-        }
+        },
+        element,
+        'rymTextProcessed'
       )
 
       if (element.classList.contains('avg_rating') || element.hasAttribute('itemprop')) {
@@ -41,7 +47,9 @@ const processRatings = () => {
           },
           (value) => {
             element.setAttribute('content', value)
-          }
+          },
+          element,
+          'rymContentProcessed'
         )
       }
 
@@ -55,18 +63,25 @@ const processRatings = () => {
               },
               (value) => {
                 image.setAttribute(attribute, value)
-              }
+              },
+              element,
+              `rym${attribute}Processed`
             )
           })
         }
       }
+      
+      element.dataset.rymProcessed = 'true'
     })
 
   document.querySelectorAll('#filmrating a.medium').forEach((element) => {
+    if (element.dataset.rymProcessed === 'true') return
+    
     const text = element.textContent.trim()
     const converted = convert(text, 1)
     if (converted !== text) {
       element.textContent = converted
+      element.dataset.rymProcessed = 'true'
     }
   })
 }
