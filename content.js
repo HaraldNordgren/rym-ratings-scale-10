@@ -1,20 +1,48 @@
-const convert = v => {
-  const n = parseFloat(v);
-  return (n >= 0.5 && n <= 5.0) ? (n * 2).toFixed(1) : v;
+const convert = value => {
+  const number = parseFloat(value);
+  if (number >= 0.5 && number <= 5.0) {
+    return (number * 2).toFixed(1);
+  }
+  return value;
 };
 
-const update = (el, get, set) => {
-  const v = get();
-  if (v) { const c = convert(v); if (c !== v) set(c); }
+const update = (getValue, setValue) => {
+  const value = getValue();
+  if (value) {
+    const converted = convert(value);
+    if (converted !== value) {
+      setValue(converted);
+    }
+  }
 };
 
 const processRatings = () => {
-  document.querySelectorAll('.avg_rating, .avg_rating_friends, .rating_num, [itemprop="ratingValue"]').forEach(el => {
-    update(el, () => el.textContent.trim(), v => el.textContent = v);
-    if (el.classList.contains('avg_rating') || el.hasAttribute('itemprop')) update(el, () => el.getAttribute('content'), v => el.setAttribute('content', v));
-    if (el.classList.contains('review_rating')) {
-      const img = el.querySelector('img');
-      if (img) ['alt', 'title'].forEach(a => update(img, () => img.getAttribute(a), v => img.setAttribute(a, v)));
+  document.querySelectorAll('.avg_rating, .avg_rating_friends, .rating_num, [itemprop="ratingValue"]').forEach(element => {
+    update(() => {
+      return element.textContent.trim();
+    }, value => {
+      element.textContent = value;
+    });
+    
+    if (element.classList.contains('avg_rating') || element.hasAttribute('itemprop')) {
+      update(() => {
+        return element.getAttribute('content');
+      }, value => {
+        element.setAttribute('content', value);
+      });
+    }
+    
+    if (element.classList.contains('review_rating')) {
+      const image = element.querySelector('img');
+      if (image) {
+        ['alt', 'title'].forEach(attribute => {
+          update(() => {
+            return image.getAttribute(attribute);
+          }, value => {
+            image.setAttribute(attribute, value);
+          });
+        });
+      }
     }
   });
 };
@@ -25,10 +53,21 @@ const startObserver = () => {
   observer = new MutationObserver(() => {
     observer.disconnect();
     observer = null;
-    setTimeout(() => { processRatings(); startObserver(); }, 100);
+    setTimeout(() => {
+      processRatings();
+      startObserver();
+    }, 100);
   });
   observer.observe(document.body, { childList: true, subtree: true });
 };
 
-const init = () => { processRatings(); startObserver(); };
-document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+const init = () => {
+  processRatings();
+  startObserver();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
