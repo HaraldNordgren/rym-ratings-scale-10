@@ -27,14 +27,7 @@ describe('content.js DOM manipulation - annie-hall', () => {
     await runContentScript(dom)
 
     const image = element.querySelector('img')
-    const altValue = image.getAttribute('alt')
-    const titleValue = image.getAttribute('title')
-    const ratingMatch = altValue.match(/\d+\.\d+/)
-    if (ratingMatch) {
-      const rating = parseFloat(ratingMatch[0])
-      expect(rating).toBeGreaterThanOrEqual(1.0)
-      expect(rating).toBeLessThanOrEqual(10.0)
-      expect(titleValue).toContain(ratingMatch[0])
-    }
+    expect(image.getAttribute('alt')).toContain('10.0')
+    expect(image.getAttribute('title')).toContain('10.0')
   })
 })
