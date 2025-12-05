@@ -8,22 +8,16 @@ describe('content.js DOM manipulation - search results', () => {
     )
     const element = elements.find((el) => {
       const style = el.getAttribute('style') || ''
-      const text = el.textContent.trim()
-      const num = parseFloat(text)
       return (
         style.includes('font-size:1.3em') &&
         style.includes('font-weight:bold') &&
-        !isNaN(num) &&
-        num >= 0.5 &&
-        num <= 5.0
+        el.textContent.trim() === '3.71'
       )
     })
 
     await runContentScript(dom)
 
-    const convertedValue = parseFloat(element.textContent.trim())
-    expect(convertedValue).toBeGreaterThanOrEqual(1.0)
-    expect(convertedValue).toBeLessThanOrEqual(10.0)
+    expect(element.textContent.trim()).toBe('7.4')
   })
 })
 

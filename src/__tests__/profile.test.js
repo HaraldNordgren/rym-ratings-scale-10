@@ -6,16 +6,10 @@ describe('content.js DOM manipulation - profile', () => {
     const elements = Array.from(
       dom.window.document.querySelectorAll('#filmrating a.medium')
     )
-    const element = elements.find((el) => {
-      const text = el.textContent.trim()
-      const num = parseFloat(text)
-      return !isNaN(num) && num >= 0.5 && num <= 5.0
-    })
+    const element = elements.find((el) => el.textContent.trim() === '4.0')
 
     await runContentScript(dom)
 
-    const convertedValue = parseFloat(element.textContent.trim())
-    expect(convertedValue).toBeGreaterThanOrEqual(1.0)
-    expect(convertedValue).toBeLessThanOrEqual(10.0)
+    expect(element.textContent.trim()).toBe('8')
   })
 })
