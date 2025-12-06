@@ -4,6 +4,7 @@
   "description": "Chrome extension to convert RateYourMusic ratings from 5-point to 10-point scale",
   "scripts": {
     "test": "jest",
+    "format:write": "prettier . --write",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
