@@ -9,17 +9,13 @@ const { JSDOM, VirtualConsole } = require('jsdom')
 const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', 'content.js'), 'utf8')
 
 const loadHTMLFile = (relativePath) => {
-  const stack = new Error().stack
-  const stackLines = stack.split('\n')
-  const callerLine = stackLines[2]
+  const callerLine = new Error().stack.split('\n')[2]
   const match = callerLine.match(/\((.+):\d+:\d+\)/) || callerLine.match(/at (.+):\d+:\d+/)
-  const callerFile = match ? match[1] : __filename
-  const callerDir = path.dirname(callerFile)
-  const htmlPath = path.join(callerDir, 'testdata', relativePath)
+  const callerFile = match?.[1] || __filename
+  const htmlPath = path.join(path.dirname(callerFile), 'testdata', relativePath)
   const html = fs.readFileSync(htmlPath, 'utf8')
   const virtualConsole = new VirtualConsole()
-  virtualConsole.on('error', () => {})
-  virtualConsole.on('jsdomError', () => {})
+  virtualConsole.on('error', () => {}).on('jsdomError', () => {})
   return new JSDOM(html, {
     runScripts: 'outside-only',
     url: `file://${path.resolve(htmlPath)}`,
