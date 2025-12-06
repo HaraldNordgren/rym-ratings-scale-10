@@ -122,6 +122,17 @@ const processRatings = () => {
       element.dataset.rymProcessed = 'true'
     }
   })
+
+  document.querySelectorAll('.page_artist_tracks_track_stats_rating').forEach((element) => {
+    if (element.dataset.rymProcessed === 'true') return
+
+    const text = element.textContent.trim()
+    const converted = convert(text, 1)
+    if (converted !== text) {
+      element.textContent = converted
+      element.dataset.rymProcessed = 'true'
+    }
+  })
 }
 
 let observer = null
