@@ -5,17 +5,27 @@ const convert = (value, decimals = 1) => {
   return (number * 2).toFixed(decimals)
 }
 
-const update = (getValue, setValue, element, dataKey) => {
-  if (element.dataset[dataKey] === 'processed') return
-
-  const value = getValue()
-  if (value) {
-    const converted = convert(value)
-    if (converted !== value) {
-      setValue(converted)
-      element.dataset[dataKey] = 'processed'
-    }
+const processElement = (element, decimals = 1) => {
+  if (element.dataset.rymProcessed === 'true') return false
+  const text = element.textContent.trim()
+  const converted = convert(text, decimals)
+  if (converted !== text) {
+    element.textContent = converted
+    element.dataset.rymProcessed = 'true'
+    return true
   }
+  return false
+}
+
+const processAttribute = (element, attribute, decimals = 1) => {
+  const value = element.getAttribute(attribute)
+  if (!value) return false
+  const converted = convert(value, decimals)
+  if (converted !== value) {
+    element.setAttribute(attribute, converted)
+    return true
+  }
+  return false
 }
 
 const processRatings = () => {
@@ -28,122 +38,45 @@ const processRatings = () => {
 
       const ratingSpan = element.querySelector('span.rating_not_enough_data')
       const targetElement = ratingSpan || element
-
-      update(
-        () => {
-          return targetElement.textContent.trim()
-        },
-        (value) => {
-          targetElement.textContent = value
-        },
-        element,
-        'rymTextProcessed'
-      )
+      processElement(targetElement)
 
       if (element.classList.contains('avg_rating') || element.hasAttribute('itemprop')) {
-        update(
-          () => {
-            return element.getAttribute('content')
-          },
-          (value) => {
-            element.setAttribute('content', value)
-          },
-          element,
-          'rymContentProcessed'
-        )
+        processAttribute(element, 'content')
       }
 
       if (element.classList.contains('review_rating')) {
         const image = element.querySelector('img')
         if (image) {
-          ;['alt', 'title'].forEach((attribute) => {
-            update(
-              () => {
-                return image.getAttribute(attribute)
-              },
-              (value) => {
-                image.setAttribute(attribute, value)
-              },
-              element,
-              `rym${attribute}Processed`
-            )
-          })
+          processAttribute(image, 'alt')
+          processAttribute(image, 'title')
         }
       }
 
       element.dataset.rymProcessed = 'true'
     })
 
-  document.querySelectorAll('#filmrating a.medium').forEach((element) => {
-    if (element.dataset.rymProcessed === 'true') return
+  const simpleSelectors = [
+    ['#filmrating a.medium', 0],
+    ['#musicrating a.medium', 0],
+    ['[id^="film_cat_catalog_msg_"]', 0],
+    ['.rating_num', 0],
+    ['.page_artist_tracks_track_stats_rating', 1]
+  ]
 
-    const text = element.textContent.trim()
-    const converted = convert(text, 0)
-    if (converted !== text) {
-      element.textContent = converted
-      element.dataset.rymProcessed = 'true'
-    }
-  })
-
-  document.querySelectorAll('#musicrating a.medium').forEach((element) => {
-    if (element.dataset.rymProcessed === 'true') return
-
-    const text = element.textContent.trim()
-    const converted = convert(text, 0)
-    if (converted !== text) {
-      element.textContent = converted
-      element.dataset.rymProcessed = 'true'
-    }
+  simpleSelectors.forEach(([selector, decimals]) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      processElement(element, decimals)
+    })
   })
 
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
-      if (element.dataset.rymProcessed === 'true') return
-
       const style = element.getAttribute('style') || ''
       if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
-        const text = element.textContent.trim()
-        const converted = convert(text, 1)
-        if (converted !== text) {
-          element.textContent = converted
-          element.dataset.rymProcessed = 'true'
-        }
+        processElement(element, 1)
       }
     })
   }
-
-  document.querySelectorAll('[id^="film_cat_catalog_msg_"]').forEach((element) => {
-    if (element.dataset.rymProcessed === 'true') return
-
-    const text = element.textContent.trim()
-    const converted = convert(text, 0)
-    if (converted !== text) {
-      element.textContent = converted
-      element.dataset.rymProcessed = 'true'
-    }
-  })
-
-  document.querySelectorAll('.rating_num').forEach((element) => {
-    if (element.dataset.rymProcessed === 'true') return
-
-    const text = element.textContent.trim()
-    const converted = convert(text, 0)
-    if (converted !== text) {
-      element.textContent = converted
-      element.dataset.rymProcessed = 'true'
-    }
-  })
-
-  document.querySelectorAll('.page_artist_tracks_track_stats_rating').forEach((element) => {
-    if (element.dataset.rymProcessed === 'true') return
-
-    const text = element.textContent.trim()
-    const converted = convert(text, 1)
-    if (converted !== text) {
-      element.textContent = converted
-      element.dataset.rymProcessed = 'true'
-    }
-  })
 }
 
 let observer = null
