@@ -31,7 +31,13 @@ const processAttribute = (element, attribute, decimals = 1) => {
 const processRatings = () => {
   document
     .querySelectorAll(
-      '.avg_rating, .avg_rating_friends, .page_charts_section_charts_item_details_average_num, .disco_avg_rating, .component_discography_item_details_average, .component_discography_item_details_average_num, [itemprop="ratingValue"]'
+      '.avg_rating, ' +
+        '.avg_rating_friends, ' +
+        '.page_charts_section_charts_item_details_average_num, ' +
+        '.disco_avg_rating, ' +
+        '.component_discography_item_details_average, ' +
+        '.component_discography_item_details_average_num, ' +
+        '[itemprop="ratingValue"]'
     )
     .forEach((element) => {
       if (element.dataset.rymProcessed === 'true') return
@@ -60,7 +66,7 @@ const processRatings = () => {
     ['#musicrating a.medium', 0],
     ['[id^="film_cat_catalog_msg_"]', 0],
     ['.rating_num', 0],
-    ['.page_artist_tracks_track_stats_rating', 1]
+    ['.page_artist_tracks_track_stats_rating', 1],
   ]
 
   simpleSelectors.forEach(([selector, decimals]) => {
