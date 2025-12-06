@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('./test-helpers')
+const { loadHTMLFile, runContentScript } = require('../test-helpers')
 
 describe('content.js DOM manipulation - director', () => {
   test('converts disco_avg_rating from director page', async () => {

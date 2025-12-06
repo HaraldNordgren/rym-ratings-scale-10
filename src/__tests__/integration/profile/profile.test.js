@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('./test-helpers')
+const { loadHTMLFile, runContentScript } = require('../test-helpers')
 
 describe('content.js DOM manipulation - profile', () => {
   test('converts numeric film rating in profile filmrating section', async () => {

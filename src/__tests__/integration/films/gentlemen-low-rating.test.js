@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('./test-helpers')
+const { loadHTMLFile, runContentScript } = require('../test-helpers')
 
 describe('content.js DOM manipulation - gentlemen low rating', () => {
   test('does not double convert rating 1.0 when processed multiple times', async () => {

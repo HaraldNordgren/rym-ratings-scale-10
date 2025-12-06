@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('./test-helpers')
+const { loadHTMLFile, runContentScript } = require('../test-helpers')
 
 describe('content.js DOM manipulation - artist songs', () => {
   test('converts page_artist_tracks_track_stats_rating from artist page', async () => {

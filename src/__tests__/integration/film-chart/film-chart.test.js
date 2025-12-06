@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('./test-helpers')
+const { loadHTMLFile, runContentScript } = require('../test-helpers')
 
 describe('content.js DOM manipulation - film-chart', () => {
   test('converts chart page average_num from custom-chart.html', async () => {

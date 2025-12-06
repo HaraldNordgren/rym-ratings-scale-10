@@ -8,8 +8,14 @@ const { JSDOM, VirtualConsole } = require('jsdom')
 
 const contentScript = fs.readFileSync(path.join(__dirname, '..', '..', 'content.js'), 'utf8')
 
-const loadHTMLFile = (relativePath, testDir = __dirname) => {
-  const htmlPath = path.join(testDir, relativePath)
+const loadHTMLFile = (relativePath) => {
+  const stack = new Error().stack
+  const stackLines = stack.split('\n')
+  const callerLine = stackLines[2]
+  const match = callerLine.match(/\((.+):\d+:\d+\)/) || callerLine.match(/at (.+):\d+:\d+/)
+  const callerFile = match ? match[1] : __filename
+  const callerDir = path.dirname(callerFile)
+  const htmlPath = path.join(callerDir, 'testdata', relativePath)
   const html = fs.readFileSync(htmlPath, 'utf8')
   const virtualConsole = new VirtualConsole()
   virtualConsole.on('error', () => {})
