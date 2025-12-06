@@ -10,4 +10,14 @@ describe('content.js DOM manipulation - profile', () => {
 
     expect(element.textContent.trim()).toBe('8')
   })
+
+  test('converts numeric music rating in profile musicrating section', async () => {
+    const dom = loadHTMLFile('profile.html')
+    const elements = Array.from(dom.window.document.querySelectorAll('#musicrating a.medium'))
+    const element = elements.find((el) => el.textContent.trim() === '4.0')
+
+    await runContentScript(dom)
+
+    expect(element.textContent.trim()).toBe('8')
+  })
 })

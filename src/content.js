@@ -85,6 +85,17 @@ const processRatings = () => {
     }
   })
 
+  document.querySelectorAll('#musicrating a.medium').forEach((element) => {
+    if (element.dataset.rymProcessed === 'true') return
+
+    const text = element.textContent.trim()
+    const converted = convert(text, 0)
+    if (converted !== text) {
+      element.textContent = converted
+      element.dataset.rymProcessed = 'true'
+    }
+  })
+
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
       if (element.dataset.rymProcessed === 'true') return
