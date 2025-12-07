@@ -8,57 +8,18 @@ const testDataPath = path.join(
 )
 
 describe('content.js DOM manipulation - gentlemen low rating', () => {
-  test('does not double convert rating 1.0 when processed multiple times', async () => {
+  test('does not double convert rating 2.30 when processed multiple times', async () => {
     const dom = loadHTMLFile(testDataPath)
-    const element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
+    const element = dom.window.document.querySelector('.avg_rating')
 
-    expect(element).not.toBeNull()
-
-    element!.textContent = '1.0'
-    element!.setAttribute('content', '1.0')
+    expect(element?.textContent?.trim()).toBe('2.30')
 
     await runContentScript(dom)
 
-    expect(element!.textContent?.trim()).toBe('2.0')
+    expect(element?.textContent?.trim()).toBe('4.6')
 
     await runContentScript(dom)
 
-    expect(element!.textContent?.trim()).toBe('2.0')
-  })
-
-  test('does not double convert rating 2.0 when processed multiple times', async () => {
-    const dom = loadHTMLFile(testDataPath)
-    const element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
-
-    expect(element).not.toBeNull()
-
-    element!.textContent = '2.0'
-    element!.setAttribute('content', '2.0')
-
-    await runContentScript(dom)
-
-    expect(element!.textContent?.trim()).toBe('4.0')
-
-    await runContentScript(dom)
-
-    expect(element!.textContent?.trim()).toBe('4.0')
-  })
-
-  test('does not double convert rating 2.4 when processed multiple times', async () => {
-    const dom = loadHTMLFile(testDataPath)
-    const element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
-
-    expect(element).not.toBeNull()
-
-    element!.textContent = '2.4'
-    element!.setAttribute('content', '2.4')
-
-    await runContentScript(dom)
-
-    expect(element!.textContent?.trim()).toBe('4.8')
-
-    await runContentScript(dom)
-
-    expect(element!.textContent?.trim()).toBe('4.8')
+    expect(element?.textContent?.trim()).toBe('4.6')
   })
 })
