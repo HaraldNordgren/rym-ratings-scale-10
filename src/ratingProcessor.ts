@@ -58,11 +58,7 @@ export const processRatings = (): void => {
 
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
-      const htmlElement = element as HTMLElement
-      const style = htmlElement.getAttribute('style') || ''
-      if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
-        processElement(htmlElement)
-      }
+      processElement(element as HTMLElement)
     })
   }
 }
