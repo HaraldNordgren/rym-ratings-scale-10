@@ -9,8 +9,7 @@ import { JSDOM, VirtualConsole } from 'jsdom'
 const distPath = path.join(__dirname, '..', '..', '..', 'dist')
 const contentScript = fs.readFileSync(path.join(distPath, 'content.js'), 'utf8')
 
-const loadHTMLFile = (relativePath: string, testDir: string = __dirname): JSDOM => {
-  const htmlPath = path.join(testDir, 'testdata', relativePath)
+const loadHTMLFile = (htmlPath: string): JSDOM => {
   const html = fs.readFileSync(htmlPath, 'utf8')
   const virtualConsole = new VirtualConsole()
   virtualConsole.on('error', () => {}).on('jsdomError', () => {})

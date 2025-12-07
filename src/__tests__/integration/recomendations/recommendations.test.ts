@@ -1,8 +1,11 @@
+import * as path from 'path'
 import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - recommendations', () => {
   test('converts rating in component_discography_item_details_average_num', async () => {
-    const dom = loadHTMLFile('Recommendations - Rate Your Music.html', __dirname)
+    const dom = loadHTMLFile(
+      path.join(__dirname, 'testdata', 'Recommendations - Rate Your Music.html')
+    )
     const elements = Array.from(
       dom.window.document.querySelectorAll('.component_discography_item_details_average_num')
     )
@@ -14,7 +17,9 @@ describe('content.js DOM manipulation - recommendations', () => {
   })
 
   test('converts rating in component_discography_item_details_average', async () => {
-    const dom = loadHTMLFile('Recommendations - Rate Your Music.html', __dirname)
+    const dom = loadHTMLFile(
+      path.join(__dirname, 'testdata', 'Recommendations - Rate Your Music.html')
+    )
     const elements = Array.from(
       dom.window.document.querySelectorAll('.component_discography_item_details_average')
     )
