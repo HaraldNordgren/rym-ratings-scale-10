@@ -11,16 +11,6 @@ const readAndCleanModule = (modulePath) => {
     .replace(/\/\/# sourceMappingURL=.*$/gm, '')
 }
 
-const getModuleDependencies = (code) => {
-  const imports = code.match(/import\s*\{[^}]*\}\s*from\s*['"]\.\/(\w+)['"];?/g) || []
-  return imports
-    .map((imp) => {
-      const match = imp.match(/['"]\.\/(\w+)['"]/)
-      return match ? match[1] : null
-    })
-    .filter(Boolean)
-}
-
 const bundleAllImports = (code, bundledModules = new Set()) => {
   const imports = code.match(/import\s*\{[^}]*\}\s*from\s*['"]\.\/(\w+)['"];?/g) || []
   const moduleNames = imports
