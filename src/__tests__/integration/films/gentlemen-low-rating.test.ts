@@ -1,9 +1,14 @@
+import * as path from 'path'
 import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - gentlemen low rating', () => {
   test('does not double convert rating 1.0 when processed multiple times', async () => {
     const dom = loadHTMLFile(
-      'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      path.join(
+        __dirname,
+        'testdata',
+        'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      )
     )
     let element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
 
@@ -28,7 +33,11 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
 
   test('does not double convert rating 2.0 when processed multiple times', async () => {
     const dom = loadHTMLFile(
-      'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      path.join(
+        __dirname,
+        'testdata',
+        'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      )
     )
     let element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
 
@@ -53,7 +62,11 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
 
   test('does not double convert rating 2.4 when processed multiple times', async () => {
     const dom = loadHTMLFile(
-      'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      path.join(
+        __dirname,
+        'testdata',
+        'Gentlemen (Film, Crime)_ Reviews, Ratings, Cast and Crew - Rate Your Music.html'
+      )
     )
     let element = dom.window.document.querySelector('.avg_rating[itemprop="ratingValue"]')
 
