@@ -3,7 +3,9 @@ import { processRatings } from './ratingProcessor'
 let observer: MutationObserver | null = null
 
 const startObserver = (): void => {
-  if (observer) return
+  if (observer) {
+    return
+  }
   observer = new MutationObserver(() => {
     observer?.disconnect()
     observer = null

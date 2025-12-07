@@ -1,7 +1,9 @@
 import { convert } from './ratingConverter'
 
 export const processElement = (element: HTMLElement, decimals: number = 1): boolean => {
-  if (element.dataset.rymProcessed === 'true') return false
+  if (element.dataset.rymProcessed === 'true') {
+    return false
+  }
   const text = element.textContent?.trim() || ''
   const converted = convert(text, decimals)
   if (converted && converted !== text) {
@@ -18,7 +20,9 @@ export const processAttribute = (
   decimals: number = 1
 ): boolean => {
   const value = element.getAttribute(attribute)
-  if (!value) return false
+  if (!value) {
+    return false
+  }
   const converted = convert(value, decimals)
   if (converted && converted !== value) {
     element.setAttribute(attribute, converted)

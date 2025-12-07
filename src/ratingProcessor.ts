@@ -21,7 +21,9 @@ const simpleSelectors: [string, number][] = [
 const processComplexRatings = (): void => {
   document.querySelectorAll(complexSelectors.join(', ')).forEach((element) => {
     const htmlElement = element as HTMLElement
-    if (htmlElement.dataset.rymProcessed === 'true') return
+    if (htmlElement.dataset.rymProcessed === 'true') {
+      return
+    }
 
     const ratingSpan = htmlElement.querySelector(
       'span.rating_not_enough_data'
