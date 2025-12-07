@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - director', () => {
   test('converts disco_avg_rating from director page', async () => {
@@ -7,14 +7,14 @@ describe('content.js DOM manipulation - director', () => {
     const element = elements.find((el) => {
       const span = el.querySelector('span.rating_not_enough_data')
       const targetElement = span || el
-      return targetElement.textContent.trim() === '1.61'
+      return targetElement.textContent?.trim() === '1.61'
     })
 
     await runContentScript(dom)
 
-    const span = element.querySelector('span.rating_not_enough_data')
+    const span = element?.querySelector('span.rating_not_enough_data')
     const targetElement = span || element
-    expect(targetElement.textContent.trim()).toBe('3.2')
+    expect(targetElement?.textContent?.trim()).toBe('3.2')
   })
 
   test('converts film_cat_catalog_msg rating from director page', async () => {
@@ -23,6 +23,6 @@ describe('content.js DOM manipulation - director', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('10')
+    expect(element?.textContent?.trim()).toBe('10')
   })
 })

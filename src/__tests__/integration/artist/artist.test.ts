@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - artist songs', () => {
   test('converts page_artist_tracks_track_stats_rating from artist page', async () => {
@@ -9,12 +9,12 @@ describe('content.js DOM manipulation - artist songs', () => {
       dom.window.document.querySelectorAll('.page_artist_tracks_track_stats_rating')
     )
     const element = elements.find((el) => {
-      return el.textContent.trim() === '4.0'
+      return el.textContent?.trim() === '4.0'
     })
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('8.0')
+    expect(element?.textContent?.trim()).toBe('8.0')
   })
 
   test('converts multiple song ratings from artist page', async () => {
@@ -25,15 +25,15 @@ describe('content.js DOM manipulation - artist songs', () => {
       dom.window.document.querySelectorAll('.page_artist_tracks_track_stats_rating')
     )
     const element44 = elements.find((el) => {
-      return el.textContent.trim() === '4.4'
+      return el.textContent?.trim() === '4.4'
     })
     const element46 = elements.find((el) => {
-      return el.textContent.trim() === '4.6'
+      return el.textContent?.trim() === '4.6'
     })
 
     await runContentScript(dom)
 
-    expect(element44.textContent.trim()).toBe('8.8')
-    expect(element46.textContent.trim()).toBe('9.2')
+    expect(element44?.textContent?.trim()).toBe('8.8')
+    expect(element46?.textContent?.trim()).toBe('9.2')
   })
 })

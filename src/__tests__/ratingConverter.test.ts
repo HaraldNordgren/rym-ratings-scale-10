@@ -1,4 +1,4 @@
-const { convertRating } = require('../ratingConverter')
+import { convertRating } from '../ratingConverter'
 
 describe('convertRating', () => {
   test('converts 3.94 to 7.9', () => {

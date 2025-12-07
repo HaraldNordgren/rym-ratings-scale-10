@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - gentlemen low rating', () => {
   test('does not double convert rating 1.0 when processed multiple times', async () => {
@@ -19,11 +19,11 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('2.0')
+    expect(element.textContent?.trim()).toBe('2.0')
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('2.0')
+    expect(element.textContent?.trim()).toBe('2.0')
   })
 
   test('does not double convert rating 2.0 when processed multiple times', async () => {
@@ -44,11 +44,11 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('4.0')
+    expect(element.textContent?.trim()).toBe('4.0')
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('4.0')
+    expect(element.textContent?.trim()).toBe('4.0')
   })
 
   test('does not double convert rating 2.4 when processed multiple times', async () => {
@@ -69,10 +69,10 @@ describe('content.js DOM manipulation - gentlemen low rating', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('4.8')
+    expect(element.textContent?.trim()).toBe('4.8')
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('4.8')
+    expect(element.textContent?.trim()).toBe('4.8')
   })
 })

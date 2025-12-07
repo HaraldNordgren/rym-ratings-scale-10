@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - annie-hall', () => {
   test('converts avg_rating from annie-hall.html', async () => {
@@ -7,7 +7,7 @@ describe('content.js DOM manipulation - annie-hall', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('7.9')
+    expect(element?.textContent?.trim()).toBe('7.9')
   })
 
   test('converts avg_rating_friends from annie-hall.html', async () => {
@@ -16,7 +16,7 @@ describe('content.js DOM manipulation - annie-hall', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('7.5')
+    expect(element?.textContent?.trim()).toBe('7.5')
   })
 
   test('converts review_rating with itemprop from annie-hall.html', async () => {
@@ -26,9 +26,9 @@ describe('content.js DOM manipulation - annie-hall', () => {
 
     await runContentScript(dom)
 
-    const image = element.querySelector('img')
-    expect(image.getAttribute('alt')).toContain('10.0')
-    expect(image.getAttribute('title')).toContain('10.0')
+    const image = element?.querySelector('img')
+    expect(image?.getAttribute('alt')).toContain('10.0')
+    expect(image?.getAttribute('title')).toContain('10.0')
   })
 
   test('converts rating_num from annie-hall.html', async () => {
@@ -37,6 +37,6 @@ describe('content.js DOM manipulation - annie-hall', () => {
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('10')
+    expect(element?.textContent?.trim()).toBe('10')
   })
 })

@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - search results', () => {
   test('converts rating in search results', async () => {
@@ -11,12 +11,12 @@ describe('content.js DOM manipulation - search results', () => {
       return (
         style.includes('font-size:1.3em') &&
         style.includes('font-weight:bold') &&
-        el.textContent.trim() === '3.71'
+        el.textContent?.trim() === '3.71'
       )
     })
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('7.4')
+    expect(element?.textContent?.trim()).toBe('7.4')
   })
 })
