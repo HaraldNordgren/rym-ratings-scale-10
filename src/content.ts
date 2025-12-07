@@ -1,15 +1,10 @@
-const convert = (value: string, decimals: number = 1): string => {
-  const number = parseFloat(value)
-  if (isNaN(number) || !isFinite(number)) return value
-  if (number < 0.5 || number > 5.0) return value
-  return (number * 2).toFixed(decimals)
-}
+import { convert } from './ratingConverter'
 
 const processElement = (element: HTMLElement, decimals: number = 1): boolean => {
   if (element.dataset.rymProcessed === 'true') return false
   const text = element.textContent?.trim() || ''
   const converted = convert(text, decimals)
-  if (converted !== text) {
+  if (converted !== text && converted !== null && converted !== undefined) {
     element.textContent = converted
     element.dataset.rymProcessed = 'true'
     return true
@@ -25,7 +20,7 @@ const processAttribute = (
   const value = element.getAttribute(attribute)
   if (!value) return false
   const converted = convert(value, decimals)
-  if (converted !== value) {
+  if (converted !== value && converted !== null && converted !== undefined) {
     element.setAttribute(attribute, converted)
     return true
   }
