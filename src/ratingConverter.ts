@@ -9,8 +9,4 @@ const convert = (
   return (number * 2).toFixed(decimals)
 }
 
-const convertRating = (rating: string | null | undefined): string | null | undefined => {
-  return convert(rating, 1)
-}
-
-export { convertRating, convert }
+export { convert }

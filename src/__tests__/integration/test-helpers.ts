@@ -12,7 +12,7 @@ const contentScript = fs.readFileSync(path.join(distPath, 'content.js'), 'utf8')
 
 const bundledScript = contentScript.replace(
   /import\s*{\s*convert\s*}\s*from\s*['"]\.\/ratingConverter['"];?/,
-  ratingConverterScript.replace(/export\s*{\s*convertRating,\s*convert\s*};?/, '')
+  ratingConverterScript.replace(/export\s*{\s*convert\s*};?/, '')
 )
 
 const loadHTMLFile = (relativePath: string): JSDOM => {
