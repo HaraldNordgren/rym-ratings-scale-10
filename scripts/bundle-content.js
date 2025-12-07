@@ -11,7 +11,7 @@ const contentCode = fs.readFileSync(contentPath, 'utf8')
 const bundledCode = contentCode.replace(
   /import\s*{\s*convert\s*}\s*from\s*['"]\.\/ratingConverter['"];?/,
   ratingConverterCode
-    .replace(/export\s*{\s*convertRating,\s*convert\s*};?/, '')
+    .replace(/export\s*{\s*convert\s*};?/, '')
     .replace(/\/\/# sourceMappingURL=.*$/gm, '')
 )
 
