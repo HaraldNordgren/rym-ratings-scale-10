@@ -5,10 +5,8 @@ let observer: MutationObserver | null = null
 export const startObserver = (): void => {
   if (observer) return
   observer = new MutationObserver(() => {
-    if (observer) {
-      observer.disconnect()
-      observer = null
-    }
+    observer?.disconnect()
+    observer = null
     processRatings()
     startObserver()
   })

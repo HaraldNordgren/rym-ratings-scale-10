@@ -4,7 +4,7 @@ export const processElement = (element: HTMLElement, decimals: number = 1): bool
   if (element.dataset.rymProcessed === 'true') return false
   const text = element.textContent?.trim() || ''
   const converted = convert(text, decimals)
-  if (converted !== text && converted !== null && converted !== undefined) {
+  if (converted && converted !== text) {
     element.textContent = converted
     element.dataset.rymProcessed = 'true'
     return true
@@ -20,7 +20,7 @@ export const processAttribute = (
   const value = element.getAttribute(attribute)
   if (!value) return false
   const converted = convert(value, decimals)
-  if (converted !== value && converted !== null && converted !== undefined) {
+  if (converted && converted !== value) {
     element.setAttribute(attribute, converted)
     return true
   }

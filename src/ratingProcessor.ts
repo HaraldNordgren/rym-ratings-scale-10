@@ -1,40 +1,39 @@
 import { processElement, processAttribute } from './elementProcessor'
 
 export const processRatings = (): void => {
-  document
-    .querySelectorAll(
-      '.avg_rating, ' +
-        '.avg_rating_friends, ' +
-        '.page_charts_section_charts_item_details_average_num, ' +
-        '.disco_avg_rating, ' +
-        '.component_discography_item_details_average, ' +
-        '.component_discography_item_details_average_num, ' +
-        '[itemprop="ratingValue"]'
-    )
-    .forEach((element) => {
-      const htmlElement = element as HTMLElement
-      if (htmlElement.dataset.rymProcessed === 'true') return
+  const complexSelectors = [
+    '.avg_rating',
+    '.avg_rating_friends',
+    '.page_charts_section_charts_item_details_average_num',
+    '.disco_avg_rating',
+    '.component_discography_item_details_average',
+    '.component_discography_item_details_average_num',
+    '[itemprop="ratingValue"]',
+  ]
 
-      const ratingSpan = htmlElement.querySelector(
-        'span.rating_not_enough_data'
-      ) as HTMLElement | null
-      const targetElement = ratingSpan || htmlElement
-      processElement(targetElement)
+  document.querySelectorAll(complexSelectors.join(', ')).forEach((element) => {
+    const htmlElement = element as HTMLElement
+    if (htmlElement.dataset.rymProcessed === 'true') return
 
-      if (htmlElement.classList.contains('avg_rating') || htmlElement.hasAttribute('itemprop')) {
-        processAttribute(htmlElement, 'content')
+    const ratingSpan = htmlElement.querySelector(
+      'span.rating_not_enough_data'
+    ) as HTMLElement | null
+    processElement(ratingSpan || htmlElement)
+
+    if (htmlElement.classList.contains('avg_rating') || htmlElement.hasAttribute('itemprop')) {
+      processAttribute(htmlElement, 'content')
+    }
+
+    if (htmlElement.classList.contains('review_rating')) {
+      const image = htmlElement.querySelector('img')
+      if (image) {
+        processAttribute(image, 'alt')
+        processAttribute(image, 'title')
       }
+    }
 
-      if (htmlElement.classList.contains('review_rating')) {
-        const image = htmlElement.querySelector('img')
-        if (image) {
-          processAttribute(image, 'alt')
-          processAttribute(image, 'title')
-        }
-      }
-
-      htmlElement.dataset.rymProcessed = 'true'
-    })
+    htmlElement.dataset.rymProcessed = 'true'
+  })
 
   const simpleSelectors: [string, number][] = [
     ['#filmrating a.medium', 0],
@@ -55,7 +54,7 @@ export const processRatings = (): void => {
       const htmlElement = element as HTMLElement
       const style = htmlElement.getAttribute('style') || ''
       if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
-        processElement(htmlElement, 1)
+        processElement(htmlElement)
       }
     })
   }
