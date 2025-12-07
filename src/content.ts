@@ -1,13 +1,13 @@
-const convert = (value, decimals = 1) => {
+const convert = (value: string, decimals: number = 1): string => {
   const number = parseFloat(value)
   if (isNaN(number) || !isFinite(number)) return value
   if (number < 0.5 || number > 5.0) return value
   return (number * 2).toFixed(decimals)
 }
 
-const processElement = (element, decimals = 1) => {
+const processElement = (element: HTMLElement, decimals: number = 1): boolean => {
   if (element.dataset.rymProcessed === 'true') return false
-  const text = element.textContent.trim()
+  const text = element.textContent?.trim() || ''
   const converted = convert(text, decimals)
   if (converted !== text) {
     element.textContent = converted
@@ -17,7 +17,11 @@ const processElement = (element, decimals = 1) => {
   return false
 }
 
-const processAttribute = (element, attribute, decimals = 1) => {
+const processAttribute = (
+  element: HTMLElement,
+  attribute: string,
+  decimals: number = 1
+): boolean => {
   const value = element.getAttribute(attribute)
   if (!value) return false
   const converted = convert(value, decimals)
@@ -28,7 +32,7 @@ const processAttribute = (element, attribute, decimals = 1) => {
   return false
 }
 
-const processRatings = () => {
+const processRatings = (): void => {
   document
     .querySelectorAll(
       '.avg_rating, ' +
@@ -40,28 +44,31 @@ const processRatings = () => {
         '[itemprop="ratingValue"]'
     )
     .forEach((element) => {
-      if (element.dataset.rymProcessed === 'true') return
+      const htmlElement = element as HTMLElement
+      if (htmlElement.dataset.rymProcessed === 'true') return
 
-      const ratingSpan = element.querySelector('span.rating_not_enough_data')
-      const targetElement = ratingSpan || element
+      const ratingSpan = htmlElement.querySelector(
+        'span.rating_not_enough_data'
+      ) as HTMLElement | null
+      const targetElement = ratingSpan || htmlElement
       processElement(targetElement)
 
-      if (element.classList.contains('avg_rating') || element.hasAttribute('itemprop')) {
-        processAttribute(element, 'content')
+      if (htmlElement.classList.contains('avg_rating') || htmlElement.hasAttribute('itemprop')) {
+        processAttribute(htmlElement, 'content')
       }
 
-      if (element.classList.contains('review_rating')) {
-        const image = element.querySelector('img')
+      if (htmlElement.classList.contains('review_rating')) {
+        const image = htmlElement.querySelector('img')
         if (image) {
           processAttribute(image, 'alt')
           processAttribute(image, 'title')
         }
       }
 
-      element.dataset.rymProcessed = 'true'
+      htmlElement.dataset.rymProcessed = 'true'
     })
 
-  const simpleSelectors = [
+  const simpleSelectors: [string, number][] = [
     ['#filmrating a.medium', 0],
     ['#musicrating a.medium', 0],
     ['[id^="film_cat_catalog_msg_"]', 0],
@@ -71,33 +78,36 @@ const processRatings = () => {
 
   simpleSelectors.forEach(([selector, decimals]) => {
     document.querySelectorAll(selector).forEach((element) => {
-      processElement(element, decimals)
+      processElement(element as HTMLElement, decimals)
     })
   })
 
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {
-      const style = element.getAttribute('style') || ''
+      const htmlElement = element as HTMLElement
+      const style = htmlElement.getAttribute('style') || ''
       if (style.includes('font-size:1.3em') && style.includes('font-weight:bold')) {
-        processElement(element, 1)
+        processElement(htmlElement, 1)
       }
     })
   }
 }
 
-let observer = null
-const startObserver = () => {
+let observer: MutationObserver | null = null
+const startObserver = (): void => {
   if (observer) return
   observer = new MutationObserver(() => {
-    observer.disconnect()
-    observer = null
+    if (observer) {
+      observer.disconnect()
+      observer = null
+    }
     processRatings()
     startObserver()
   })
   observer.observe(document.body, { childList: true, subtree: true })
 }
 
-const init = () => {
+const init = (): void => {
   processRatings()
   startObserver()
 }

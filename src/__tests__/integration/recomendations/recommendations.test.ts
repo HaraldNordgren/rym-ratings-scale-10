@@ -1,4 +1,4 @@
-const { loadHTMLFile, runContentScript } = require('../test-helpers')
+import { loadHTMLFile, runContentScript } from '../test-helpers'
 
 describe('content.js DOM manipulation - recommendations', () => {
   test('converts rating in component_discography_item_details_average_num', async () => {
@@ -6,11 +6,11 @@ describe('content.js DOM manipulation - recommendations', () => {
     const elements = Array.from(
       dom.window.document.querySelectorAll('.component_discography_item_details_average_num')
     )
-    const element = elements.find((el) => el.textContent.trim() === '3.56')
+    const element = elements.find((el) => el.textContent?.trim() === '3.56')
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('7.1')
+    expect(element?.textContent?.trim()).toBe('7.1')
   })
 
   test('converts rating in component_discography_item_details_average', async () => {
@@ -18,10 +18,10 @@ describe('content.js DOM manipulation - recommendations', () => {
     const elements = Array.from(
       dom.window.document.querySelectorAll('.component_discography_item_details_average')
     )
-    const element = elements.find((el) => el.textContent.trim() === '3.56')
+    const element = elements.find((el) => el.textContent?.trim() === '3.56')
 
     await runContentScript(dom)
 
-    expect(element.textContent.trim()).toBe('7.1')
+    expect(element?.textContent?.trim()).toBe('7.1')
   })
 })
