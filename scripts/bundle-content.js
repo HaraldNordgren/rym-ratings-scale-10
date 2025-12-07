@@ -13,7 +13,9 @@ const removeExports = (code) =>
 
 const bundleImports = (code, bundled = new Set()) => {
   const imports = [...code.matchAll(IMPORT_REGEX)].map((m) => m[1])
-  if (imports.length === 0) return code
+  if (imports.length === 0) {
+    return code
+  }
 
   let result = code
   for (const moduleName of imports) {
@@ -28,7 +30,9 @@ const bundleImports = (code, bundled = new Set()) => {
     }
 
     const modulePath = path.join(DIST_DIR, `${moduleName}.js`)
-    if (!fs.existsSync(modulePath)) continue
+    if (!fs.existsSync(modulePath)) {
+      continue
+    }
 
     bundled.add(moduleName)
     let moduleCode = fs.readFileSync(modulePath, 'utf8')
