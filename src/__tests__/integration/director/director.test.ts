@@ -28,6 +28,8 @@ describe('content.js DOM manipulation - director', () => {
     const dom = loadHTMLFile(testDataPath)
     const element = dom.window.document.querySelector('#film_cat_catalog_msg_58')
 
+    expect(element?.textContent?.trim()).toBe('5.0')
+
     await runContentScript(dom)
 
     expect(element?.textContent?.trim()).toBe('10')
