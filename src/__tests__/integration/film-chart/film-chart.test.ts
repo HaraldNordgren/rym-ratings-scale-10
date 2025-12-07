@@ -1,9 +1,11 @@
 import * as path from 'path'
 import { loadHTMLFile, runContentScript } from '../test-helpers'
 
+const testDataPath = path.join(__dirname, 'testdata', 'custom-chart.html')
+
 describe('content.js DOM manipulation - film-chart', () => {
   test('converts chart page average_num from custom-chart.html', async () => {
-    const dom = loadHTMLFile(path.join(__dirname, 'testdata', 'custom-chart.html'))
+    const dom = loadHTMLFile(testDataPath)
     const elements = Array.from(
       dom.window.document.querySelectorAll('.page_charts_section_charts_item_details_average_num')
     )
