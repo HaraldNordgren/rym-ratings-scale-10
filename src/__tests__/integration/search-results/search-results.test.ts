@@ -1,9 +1,11 @@
 import * as path from 'path'
 import { loadHTMLFile, runContentScript } from '../test-helpers'
 
+const testDataPath = path.join(__dirname, 'testdata', 'Search - Rate Your Music.html')
+
 describe('content.js DOM manipulation - search results', () => {
   test('converts rating in search results', async () => {
-    const dom = loadHTMLFile(path.join(__dirname, 'testdata', 'Search - Rate Your Music.html'))
+    const dom = loadHTMLFile(testDataPath)
     const elements = Array.from(
       dom.window.document.querySelectorAll('td[style*="width:100px"] span')
     )
