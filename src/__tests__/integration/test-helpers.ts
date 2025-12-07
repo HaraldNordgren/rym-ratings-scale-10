@@ -6,9 +6,13 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { JSDOM, VirtualConsole } from 'jsdom'
 
-const contentScript = fs.readFileSync(
-  path.join(__dirname, '..', '..', '..', 'dist', 'content.js'),
-  'utf8'
+const distPath = path.join(__dirname, '..', '..', '..', 'dist')
+const ratingConverterScript = fs.readFileSync(path.join(distPath, 'ratingConverter.js'), 'utf8')
+const contentScript = fs.readFileSync(path.join(distPath, 'content.js'), 'utf8')
+
+const bundledScript = contentScript.replace(
+  /import\s*{\s*convert\s*}\s*from\s*['"]\.\/ratingConverter['"];?/,
+  ratingConverterScript.replace(/export\s*{\s*convertRating,\s*convert\s*};?/, '')
 )
 
 const loadHTMLFile = (relativePath: string): JSDOM => {
@@ -27,7 +31,7 @@ const loadHTMLFile = (relativePath: string): JSDOM => {
 }
 
 const runContentScript = (dom: JSDOM): Promise<void> => {
-  dom.window.eval(contentScript)
+  dom.window.eval(bundledScript)
   return new Promise((resolve) => setTimeout(resolve, 150))
 }
 

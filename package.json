@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Chrome extension to convert RateYourMusic ratings from 5-point to 10-point scale",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/bundle-content.js",
     "test": "npm run build && jest",
     "format:write": "prettier . --write",
     "format:check": "prettier --check ."
