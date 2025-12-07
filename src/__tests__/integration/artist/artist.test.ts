@@ -3,7 +3,8 @@ import { loadHTMLFile, runContentScript } from '../test-helpers'
 describe('content.js DOM manipulation - artist songs', () => {
   test('converts page_artist_tracks_track_stats_rating from artist page', async () => {
     const dom = loadHTMLFile(
-      'Sade Albums_ songs, discography, biography, and listening guide - Rate Your Music.html'
+      'Sade Albums_ songs, discography, biography, and listening guide - Rate Your Music.html',
+      __dirname
     )
     const elements = Array.from(
       dom.window.document.querySelectorAll('.page_artist_tracks_track_stats_rating')
@@ -19,7 +20,8 @@ describe('content.js DOM manipulation - artist songs', () => {
 
   test('converts multiple song ratings from artist page', async () => {
     const dom = loadHTMLFile(
-      'Sade Albums_ songs, discography, biography, and listening guide - Rate Your Music.html'
+      'Sade Albums_ songs, discography, biography, and listening guide - Rate Your Music.html',
+      __dirname
     )
     const elements = Array.from(
       dom.window.document.querySelectorAll('.page_artist_tracks_track_stats_rating')
