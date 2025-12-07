@@ -8,6 +8,8 @@ describe('content.js DOM manipulation - annie-hall', () => {
     const dom = loadHTMLFile(testDataPath)
     const element = dom.window.document.querySelector('.avg_rating')
 
+    expect(element?.textContent?.trim()).toBe('3.94')
+
     await runContentScript(dom)
 
     expect(element?.textContent?.trim()).toBe('7.9')
@@ -17,6 +19,8 @@ describe('content.js DOM manipulation - annie-hall', () => {
     const dom = loadHTMLFile(testDataPath)
     const element = dom.window.document.querySelector('.avg_rating_friends')
 
+    expect(element?.textContent?.trim()).toBe('3.73')
+
     await runContentScript(dom)
 
     expect(element?.textContent?.trim()).toBe('7.5')
@@ -25,11 +29,13 @@ describe('content.js DOM manipulation - annie-hall', () => {
   test('converts review_rating with itemprop from annie-hall.html', async () => {
     const dom = loadHTMLFile(testDataPath)
     const elements = dom.window.document.querySelectorAll('.review_rating[itemprop="ratingValue"]')
-    const element = elements[0]
+    const image = elements[0]?.querySelector('img')
+
+    expect(image?.getAttribute('alt')).toContain('5.0')
+    expect(image?.getAttribute('title')).toContain('5.0')
 
     await runContentScript(dom)
 
-    const image = element?.querySelector('img')
     expect(image?.getAttribute('alt')).toContain('10.0')
     expect(image?.getAttribute('title')).toContain('10.0')
   })
@@ -37,6 +43,8 @@ describe('content.js DOM manipulation - annie-hall', () => {
   test('converts rating_num from annie-hall.html', async () => {
     const dom = loadHTMLFile(testDataPath)
     const element = dom.window.document.querySelector('#rating_num_F_30')
+
+    expect(element?.textContent?.trim()).toBe('5.0')
 
     await runContentScript(dom)
 
