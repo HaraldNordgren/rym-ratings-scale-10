@@ -1,68 +1,54 @@
 const fs = require('fs')
 const path = require('path')
 
-const distPath = path.join(__dirname, '..', 'dist')
+const DIST_DIR = path.join(__dirname, '..', 'dist')
+const ENTRY_FILE = 'content.js'
 
-const readAndCleanModule = (modulePath) => {
-  const code = fs.readFileSync(modulePath, 'utf8')
+const removeExports = (code) => {
   return code
     .replace(/export\s+(const|let|var|function|class|async\s+function)\s+/g, '$1 ')
     .replace(/export\s*\{[^}]*\}\s*;?/g, '')
     .replace(/\/\/# sourceMappingURL=.*$/gm, '')
 }
 
-const bundleAllImports = (code, bundledModules = new Set()) => {
-  const imports = code.match(/import\s*\{[^}]*\}\s*from\s*['"]\.\/(\w+)['"];?/g) || []
-  const moduleNames = imports
-    .map((imp) => {
-      const match = imp.match(/['"]\.\/(\w+)['"]/)
-      return match ? match[1] : null
-    })
-    .filter(Boolean)
+const getLocalImports = (code) => {
+  const matches = code.matchAll(/import\s*\{[^}]*\}\s*from\s*['"]\.\/(\w+)['"];?/g)
+  return Array.from(matches, (m) => m[1])
+}
 
-  if (moduleNames.length === 0) {
-    return code
-  }
+const bundleImports = (code, bundled = new Set()) => {
+  const imports = getLocalImports(code)
+  if (imports.length === 0) return code
 
   let result = code
-  for (const moduleName of moduleNames) {
-    if (bundledModules.has(moduleName)) {
-      const importRegex = new RegExp(
-        `import\\s*\\{[^}]*\\}\\s*from\\s*['"]\\.\\/${moduleName}['"];?`,
-        'g'
+  for (const moduleName of imports) {
+    if (bundled.has(moduleName)) {
+      result = result.replace(
+        new RegExp(`import\\s*\\{[^}]*\\}\\s*from\\s*['"]\\.\\/${moduleName}['"];?`, 'g'),
+        ''
       )
-      result = result.replace(importRegex, '')
       continue
     }
 
-    const modulePath = path.join(distPath, `${moduleName}.js`)
-    if (!fs.existsSync(modulePath)) {
-      continue
-    }
+    const modulePath = path.join(DIST_DIR, `${moduleName}.js`)
+    if (!fs.existsSync(modulePath)) continue
 
-    bundledModules.add(moduleName)
-    let moduleCode = readAndCleanModule(modulePath)
-    moduleCode = bundleAllImports(moduleCode, bundledModules)
+    bundled.add(moduleName)
+    let moduleCode = fs.readFileSync(modulePath, 'utf8')
+    moduleCode = removeExports(moduleCode)
+    moduleCode = bundleImports(moduleCode, bundled)
 
-    const importRegex = new RegExp(
-      `import\\s*\\{[^}]*\\}\\s*from\\s*['"]\\.\\/${moduleName}['"];?`,
-      'g'
+    result = result.replace(
+      new RegExp(`import\\s*\\{[^}]*\\}\\s*from\\s*['"]\\.\\/${moduleName}['"];?`, 'g'),
+      moduleCode
     )
-    result = result.replace(importRegex, moduleCode)
   }
 
   return result
 }
 
-const contentPath = path.join(distPath, 'content.js')
-let bundledCode = fs.readFileSync(contentPath, 'utf8')
-
-bundledCode = bundleAllImports(bundledCode)
-
-bundledCode = bundledCode.replace(
-  /export\s+(const|let|var|function|class|async\s+function)\s+/g,
-  '$1 '
-)
-bundledCode = bundledCode.replace(/export\s*\{[^}]*\}\s*;?/g, '')
-
-fs.writeFileSync(contentPath, bundledCode, 'utf8')
+const entryPath = path.join(DIST_DIR, ENTRY_FILE)
+let code = fs.readFileSync(entryPath, 'utf8')
+code = bundleImports(code)
+code = removeExports(code)
+fs.writeFileSync(entryPath, code, 'utf8')
