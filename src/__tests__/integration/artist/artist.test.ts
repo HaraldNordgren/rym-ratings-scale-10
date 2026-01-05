@@ -46,15 +46,19 @@ describe('content.js DOM manipulation - artist songs', () => {
     expect(element46?.textContent?.trim()).toBe('9.2')
   })
 
-  test('converts disco_cat_inner from artist page', async () => {
+  test('converts disco_cat_inner from artist page cataloged', async () => {
     const dom = loadHTMLFile(nasTestDataPath)
     const elements = Array.from(dom.window.document.querySelectorAll('.disco_cat_inner'))
-    const element = elements.find((el) => {
+    const element50 = elements.find((el) => {
       return el.textContent?.trim() === '5.0/CD'
+    })
+    const element30 = elements.find((el) => {
+      return el.textContent?.trim() === '3.0'
     })
 
     await runContentScript(dom)
 
-    expect(element?.textContent?.trim()).toBe('10.0/CD')
+    expect(element50?.textContent?.trim()).toBe('10/CD')
+    expect(element30?.textContent?.trim()).toBe('6')
   })
 })

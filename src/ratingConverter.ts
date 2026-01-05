@@ -17,7 +17,7 @@ const convert = (
 
 const convertCatalog = (
   value: string | null | undefined,
-  decimals: number = 1
+  decimals: number = 0
 ): string | null | undefined => {
   if (!value) {
     return value

@@ -14,12 +14,12 @@ export const processElement = (element: HTMLElement, decimals: number = 1): bool
   return false
 }
 
-export const processCatalogElement = (element: HTMLElement, decimals: number = 1): boolean => {
+export const processCatalogElement = (element: HTMLElement): boolean => {
   if (element.dataset.rymProcessed === 'true') {
     return false
   }
   const text = element.textContent?.trim() || ''
-  const converted = convertCatalog(text, decimals)
+  const converted = convertCatalog(text)
   if (converted && converted !== text) {
     element.textContent = converted
     element.dataset.rymProcessed = 'true'
