@@ -15,4 +15,28 @@ const convert = (
   return (number * 2).toFixed(decimals)
 }
 
-export { convert }
+const convertCatalog = (
+  value: string | null | undefined,
+  decimals: number = 0
+): string | null | undefined => {
+  if (!value) {
+    return value
+  }
+  const trimmed = value.trim()
+  if (!trimmed) {
+    return value
+  }
+  const slashIndex = trimmed.indexOf('/')
+  if (slashIndex === -1) {
+    return convert(trimmed, decimals)
+  }
+  const numberPart = trimmed.substring(0, slashIndex).trim()
+  const formatPart = trimmed.substring(slashIndex + 1).trim()
+  const convertedNumber = convert(numberPart, decimals)
+  if (convertedNumber === numberPart) {
+    return value
+  }
+  return `${convertedNumber}/${formatPart}`
+}
+
+export { convert, convertCatalog }

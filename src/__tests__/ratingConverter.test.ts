@@ -1,4 +1,4 @@
-import { convert } from '../ratingConverter'
+import { convert, convertCatalog } from '../ratingConverter'
 
 describe('convert', () => {
   test('converts 3.94 to 7.9', () => {
@@ -78,5 +78,62 @@ describe('convert', () => {
   test('does not convert values outside valid range', () => {
     expect(convert('0.4', 1)).toBe('0.4')
     expect(convert('6.0', 1)).toBe('6.0')
+  })
+})
+
+describe('convertCatalog', () => {
+  test('converts 5.0/CD to 10.0/CD', () => {
+    expect(convertCatalog('5.0/CD', 1)).toBe('10.0/CD')
+  })
+
+  test('converts 5.0/Cassette to 10.0/Cassette', () => {
+    expect(convertCatalog('5.0/Cassette', 1)).toBe('10.0/Cassette')
+  })
+
+  test('converts 4.0/CD to 8.0/CD', () => {
+    expect(convertCatalog('4.0/CD', 1)).toBe('8.0/CD')
+  })
+
+  test('converts 4.5/CD to 9.0/CD', () => {
+    expect(convertCatalog('4.5/CD', 1)).toBe('9.0/CD')
+  })
+
+  test('converts 3.0 to 6.0 (no format part)', () => {
+    expect(convertCatalog('3.0', 1)).toBe('6.0')
+  })
+
+  test('converts 2.5 to 5.0 (no format part)', () => {
+    expect(convertCatalog('2.5', 1)).toBe('5.0')
+  })
+
+  test('handles empty string', () => {
+    expect(convertCatalog('', 1)).toBe('')
+  })
+
+  test('handles null', () => {
+    expect(convertCatalog(null, 1)).toBe(null)
+  })
+
+  test('handles undefined', () => {
+    expect(convertCatalog(undefined, 1)).toBe(undefined)
+  })
+
+  test('returns original value for non-numeric input without slash', () => {
+    expect(convertCatalog('CD', 1)).toBe('CD')
+    expect(convertCatalog('Wishlist', 1)).toBe('Wishlist')
+  })
+
+  test('returns original value for non-numeric input with slash', () => {
+    expect(convertCatalog('invalid/CD', 1)).toBe('invalid/CD')
+  })
+
+  test('does not convert values already on 10-point scale', () => {
+    expect(convertCatalog('10.0/CD', 1)).toBe('10.0/CD')
+    expect(convertCatalog('8.0/CD', 1)).toBe('8.0/CD')
+  })
+
+  test('does not convert values outside valid range', () => {
+    expect(convertCatalog('0.4/CD', 1)).toBe('0.4/CD')
+    expect(convertCatalog('6.0/CD', 1)).toBe('6.0/CD')
   })
 })

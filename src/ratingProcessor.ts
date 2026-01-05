@@ -1,4 +1,4 @@
-import { processElement, processAttribute } from './elementProcessor'
+import { processElement, processAttribute, processCatalogElement } from './elementProcessor'
 
 const complexSelectors = [
   '.avg_rating',
@@ -54,9 +54,16 @@ const processSimpleRatings = (): void => {
   })
 }
 
+const processCatalogRatings = (): void => {
+  document.querySelectorAll('.disco_cat_inner').forEach((element) => {
+    processCatalogElement(element as HTMLElement)
+  })
+}
+
 export const processRatings = (): void => {
   processComplexRatings()
   processSimpleRatings()
+  processCatalogRatings()
 
   if (document.documentElement.classList.contains('page_search')) {
     document.querySelectorAll('td[style*="width:100px"] span').forEach((element) => {

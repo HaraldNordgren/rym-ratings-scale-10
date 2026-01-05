@@ -7,6 +7,12 @@ const testDataPath = path.join(
   'Sade Albums_ songs, discography, biography, and listening guide - Rate Your Music.html'
 )
 
+const nasTestDataPath = path.join(
+  __dirname,
+  'testdata',
+  'Nas Albums_ songs, discography, biography, and listening guide - Rate Your Music.html'
+)
+
 describe('content.js DOM manipulation - artist songs', () => {
   test('converts page_artist_tracks_track_stats_rating from artist page', async () => {
     const dom = loadHTMLFile(testDataPath)
@@ -38,5 +44,21 @@ describe('content.js DOM manipulation - artist songs', () => {
 
     expect(element44?.textContent?.trim()).toBe('8.8')
     expect(element46?.textContent?.trim()).toBe('9.2')
+  })
+
+  test('converts disco_cat_inner from artist page cataloged', async () => {
+    const dom = loadHTMLFile(nasTestDataPath)
+    const elements = Array.from(dom.window.document.querySelectorAll('.disco_cat_inner'))
+    const element50 = elements.find((el) => {
+      return el.textContent?.trim() === '5.0/CD'
+    })
+    const element30 = elements.find((el) => {
+      return el.textContent?.trim() === '3.0'
+    })
+
+    await runContentScript(dom)
+
+    expect(element50?.textContent?.trim()).toBe('10/CD')
+    expect(element30?.textContent?.trim()).toBe('6')
   })
 })
