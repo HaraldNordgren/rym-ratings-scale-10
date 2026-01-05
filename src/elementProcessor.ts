@@ -1,4 +1,4 @@
-import { convert } from './ratingConverter'
+import { convert, convertCatalog } from './ratingConverter'
 
 export const processElement = (element: HTMLElement, decimals: number = 1): boolean => {
   if (element.dataset.rymProcessed === 'true') {
@@ -6,6 +6,20 @@ export const processElement = (element: HTMLElement, decimals: number = 1): bool
   }
   const text = element.textContent?.trim() || ''
   const converted = convert(text, decimals)
+  if (converted && converted !== text) {
+    element.textContent = converted
+    element.dataset.rymProcessed = 'true'
+    return true
+  }
+  return false
+}
+
+export const processCatalogElement = (element: HTMLElement, decimals: number = 1): boolean => {
+  if (element.dataset.rymProcessed === 'true') {
+    return false
+  }
+  const text = element.textContent?.trim() || ''
+  const converted = convertCatalog(text, decimals)
   if (converted && converted !== text) {
     element.textContent = converted
     element.dataset.rymProcessed = 'true'
