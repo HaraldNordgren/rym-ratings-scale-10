@@ -18,6 +18,12 @@ export const processCatalogElement = (element: HTMLElement): boolean => {
   if (element.dataset.rymProcessed === 'true') {
     return false
   }
+  const catalogMsg = element.querySelector(
+    '[id^="film_cat_catalog_msg_"], [id^="music_cat_catalog_msg_"]'
+  ) as HTMLElement | null
+  if (catalogMsg) {
+    return processElement(catalogMsg, 0)
+  }
   const text = element.textContent?.trim() || ''
   const converted = convertCatalog(text)
   if (converted && converted !== text) {

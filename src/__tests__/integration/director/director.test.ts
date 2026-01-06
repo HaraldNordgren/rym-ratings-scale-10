@@ -34,4 +34,15 @@ describe('content.js DOM manipulation - director', () => {
 
     expect(element?.textContent?.trim()).toBe('10')
   })
+
+  test('converts Jack film_cat_catalog_msg rating without double scaling', async () => {
+    const dom = loadHTMLFile(testDataPath)
+    const element = dom.window.document.querySelector('#film_cat_catalog_msg_7806')
+
+    expect(element?.textContent?.trim()).toBe('1.0')
+
+    await runContentScript(dom)
+
+    expect(element?.textContent?.trim()).toBe('2')
+  })
 })
