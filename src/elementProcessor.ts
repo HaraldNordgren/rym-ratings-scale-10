@@ -22,7 +22,15 @@ export const processCatalogElement = (element: HTMLElement): boolean => {
     '[id^="film_cat_catalog_msg_"], [id^="music_cat_catalog_msg_"]'
   ) as HTMLElement | null
   if (catalogMsg) {
-    return processElement(catalogMsg, 0)
+    if (catalogMsg.dataset.rymProcessed === 'true') {
+      element.dataset.rymProcessed = 'true'
+      return false
+    }
+    const processed = processElement(catalogMsg, 0)
+    if (processed) {
+      element.dataset.rymProcessed = 'true'
+    }
+    return processed
   }
   const text = element.textContent?.trim() || ''
   const converted = convertCatalog(text)
