@@ -13,7 +13,6 @@ const complexSelectors = [
 const simpleSelectors: [string, number][] = [
   ['#filmrating a.medium', 0],
   ['#musicrating a.medium', 0],
-  ['[id^="film_cat_catalog_msg_"]', 0],
   ['.rating_num', 0],
   ['.page_artist_tracks_track_stats_rating', 1],
 ]
