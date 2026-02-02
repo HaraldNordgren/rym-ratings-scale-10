@@ -1,6 +1,6 @@
 # RYM Ratings Scale 10
 
-A Chrome extension that converts RateYourMusic ratings from a 5-point scale to a 10-point scale by multiplying all ratings by 10 and rounding to 1 decimal place.
+A Chrome extension that converts RateYourMusic ratings from a 5-point scale to a 10-point scale by multiplying all ratings by 2.
 
 ## Installation
 
